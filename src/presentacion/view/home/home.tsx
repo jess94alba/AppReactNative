@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image, TextInput, StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native'
+import {
+    View, Text, Image, TextInput, StyleSheet, ToastAndroid,
+    TouchableOpacity
+} from 'react-native'
 import RoundedButton from '../../../presentacion/components/RoundedButton';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../App';
