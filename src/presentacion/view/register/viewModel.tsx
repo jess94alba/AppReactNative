@@ -1,6 +1,6 @@
-import React, { useState } from "react"
-import { RegisterAuthUseCase } from
-    "../../../domain/useCases/auth/RegisterAuth";
+import React, { useState } from "react";
+import { RegisterAuthUseCase } from "../../../domain/useCases/auth/RegisterAuth";
+
 const RegisterViewModel = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [values, setValues] = useState({
@@ -11,37 +11,43 @@ const RegisterViewModel = () => {
         password: '',
         confirmPassword: ''
     });
+
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });
     }
+
     const register = async () => {
-        if (!isValidForm()) {
+        if (isValidForm()) {
+            setErrorMessage(''); // Limpiar errores previos si todo está bien
             const response = await RegisterAuthUseCase(values);
-            console.log('Result' + JSON.stringify(response));
+            console.log('Result: ', response);
+        } else {
+            console.log('Formulario no válido');
         }
     }
+
     const isValidForm = (): boolean => {
-        if (values.name === '') {
+        if (values.name.trim() === '') {
             setErrorMessage('El nombre es requerido');
             return false;
         }
-        if (values.lastname === '') {
+        if (values.lastname.trim() === '') {
             setErrorMessage('El apellido es requerido');
             return false;
         }
-        if (values.email === '') {
+        if (values.email.trim() === '') {
             setErrorMessage('El correo es requerido');
             return false;
         }
-        if (values.phone === '') {
+        if (values.phone.trim() === '') {
             setErrorMessage('El teléfono es requerido');
             return false;
         }
-        if (values.password === '') {
+        if (values.password.trim() === '') {
             setErrorMessage('La contraseña es requerida');
             return false;
         }
-        if (values.confirmPassword === '') {
+        if (values.confirmPassword.trim() === '') {
             setErrorMessage('La confirmación de contraseña es requerida');
             return false;
         }
@@ -49,8 +55,10 @@ const RegisterViewModel = () => {
             setErrorMessage('Las contraseñas no coinciden');
             return false;
         }
+
         return true;
     }
+
     return {
         ...values,
         onChange,
@@ -58,4 +66,5 @@ const RegisterViewModel = () => {
         errorMessage
     }
 }
+
 export default RegisterViewModel;
