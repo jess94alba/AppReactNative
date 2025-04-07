@@ -1,8 +1,8 @@
 import React, { useState } from "react"
-import { ApiDelivery } from "../../../data/sources/remote/api/apiDelivery";
 import { RegisterAuthUseCase } from
     "../../../domain/useCases/auth/RegisterAuth";
 const RegisterViewModel = () => {
+    const [errorMessage, setErrorMessage] = useState('');
     const [values, setValues] = useState({
         name: '',
         lastname: '',
@@ -15,13 +15,47 @@ const RegisterViewModel = () => {
         setValues({ ...values, [property]: value });
     }
     const register = async () => {
-        const response = await RegisterAuthUseCase(values);
-        console.log('Result' + JSON.stringify(response));
+        if (!isValidForm()) {
+            const response = await RegisterAuthUseCase(values);
+            console.log('Result' + JSON.stringify(response));
+        }
+    }
+    const isValidForm = (): boolean => {
+        if (values.name === '') {
+            setErrorMessage('El nombre es requerido');
+            return false;
+        }
+        if (values.lastname === '') {
+            setErrorMessage('El apellido es requerido');
+            return false;
+        }
+        if (values.email === '') {
+            setErrorMessage('El correo es requerido');
+            return false;
+        }
+        if (values.phone === '') {
+            setErrorMessage('El teléfono es requerido');
+            return false;
+        }
+        if (values.password === '') {
+            setErrorMessage('La contraseña es requerida');
+            return false;
+        }
+        if (values.confirmPassword === '') {
+            setErrorMessage('La confirmación de contraseña es requerida');
+            return false;
+        }
+        if (values.password !== values.confirmPassword) {
+            setErrorMessage('Las contraseñas no coinciden');
+            return false;
+        }
+        return true;
     }
     return {
         ...values,
         onChange,
-        register
+        register,
+        errorMessage
     }
 }
 export default RegisterViewModel;
